@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+  <h1 class="h1">NepSe Companies <hr/></h1>
+  {% for table in tables %}
+<!--  {{titles[loop.index]}}-->
+  {{ table|safe }}
+  {% endfor %}
+{% endblock %}

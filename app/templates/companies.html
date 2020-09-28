@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<h2 class="h2">{{request.args.get('sector') or ""}} Companies
+    <hr/>
+</h2>
+<form action="{{request.path}}" class="form-inline" method="get">
+    <div class="form-group">
+        <div class="form-group mb-2">
+            <select class="form-control form-control-sm" name="sector" id="sector">
+                <option value="">All Sectors</option>
+                {% for sector in sectors %}
+                <option {% if request.args.get(
+                'sector') == sector %} selected {% endif %} value="{{sector}}">{{sector}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group mb-2 ml-2">
+            <input name="term" class="form-control-sm" placeholder="Name, Scrip, Sector"
+                   value="{{ request.args.get('term') or '' }}">
+        </div>
+        <div class="form-group mb-2 ml-2">
+            <button class="btn btn-success btn-sm">Search</button>
+        </div>
+    </div>
+</form>
+{{ pagination.info }}
+<table id="companies" class="table table-sm table-striped">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Scrip</th>
+        <th>Sector</th>
+        <th>Ticker</th>
+        <th>SS ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for company in companies %}
+    <tr>
+        <td>{{company.id}}</td>
+        <td>{{company.name}}</td>
+        <td>{{company.scrip}}</td>
+        <td>{{company.sector}}</td>
+        <td>{{company.ticker}}</td>
+        <td>{{company.ss_id}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{{ pagination.links }}
+<script>
+    $(document).ready(function () {
+        // alert("hi")
+        // $('#companies').DataTable();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="4c99bfe1-d73b-4969-934e-9661823fd0da" name="flask@warehouse" url="http://202.45.146.72">
+        <fileTransfer rootFolder="/var/www/FlaskApp/FlaskApp" accessType="SFTP" host="202.45.146.72" port="8994" sshConfigId="5393ebc6-0986-4992-ba21-5ee11411d242" sshConfig="warehouseuser@202.45.146.72:8994 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

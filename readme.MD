@@ -1,0 +1,1 @@
+Followed based on https://opentechschool.github.io/python-flask/core/setup.html

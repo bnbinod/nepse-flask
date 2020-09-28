@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="emails DB" uuid="ef8db838-212c-45f7-8433-78a4c0b3c45b">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/emails.db</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="history@warehouse" uuid="755dbeb7-5da0-4806-8a24-c6e88973e4c0">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://202.45.146.72:8995/history</jdbc-url>
+    </data-source>
+  </component>
+</project>

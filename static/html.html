@@ -1,0 +1,41 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>Html page:: Python</title>
+</head>
+<body>
+<blockquote>Nerds like us are allowed to be unironically enthusiastic about stuff. Nerds are allowed to love stuff -
+    like, jump-up-and-down-in-your-chair-can't-control-yourself love it. When people call other people nerds, mostly
+    what they're saying is "You like stuff", which is not a good insult at all. Like, "You are too enthusiastic about
+    the miracle of human consciousness".
+</blockquote>
+<div class="cite">John Green</div>
+<style>
+    blockquote {
+        background-color: black;
+        color: yellow;
+        padding: 10px;
+    }
+
+    .cite {
+        text-align: right;
+        font-weight: bold;
+        font-size: x-large;
+    }
+</style>
+<script>
+    function partypartyparty() {
+        var quotes = document.getElementsByClassName('fancyquote');
+        for (var i = 0; i < quotes.length; i++) {
+            var r = Math.floor(Math.random() * 255);
+            var g = Math.floor(Math.random() * 255);
+            var b = Math.floor(Math.random() * 255);
+            var q = quotes[i];
+            q.style.setProperty('color', 'rgb(' + r + ',' + g + ',' + b + ')');
+        }
+    }
+
+    window.setInterval(partypartyparty, 500);
+</script>
+</body>
+</html>
