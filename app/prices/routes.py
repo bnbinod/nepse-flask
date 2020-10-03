@@ -1,13 +1,15 @@
 import datetime, os, requests
-from flask import render_template
-from sqlalchemy import text
+from flask import render_template, url_for, request
+from sqlalchemy import text, func, extract, distinct
+import numpy as np
 
+import main
 from app.models import Company, PriceHistory
 import pandas as pd
 import lxml.html as lh
-from app.main import bp
+from app.prices import bp
 import re
-from app import db
+from app import db, prices
 from sqlalchemy.dialects.postgresql import insert
 
 dataPath = '/content/drive/My Drive/visit.nrb@gmail.com/Python/nepse/'
@@ -20,7 +22,9 @@ baseURL = "http://nepalstock.com/main/todays_price/index/0/?startDate={}&stock-s
 
 # Get current dateTime in YYYYmmddHHMMSS for filename
 dt = datetime.datetime.today().strftime('%Y%m%d%H%M%S')
-startDate = "2020-09-23"
+startDate = "2020-09-24"
+
+
 # startDate = datetime.datetime.today().strftime('%Y-%m-%d')
 
 
@@ -34,11 +38,46 @@ def fetch_prices():
         thisDay = singleDate.strftime("%Y-%m-%d")
         df = loopPerDay(thisDay)
         # saveToDB(df)
-    # print(df)
-    # ---------- End of fetch operation
-    sectors = Company.query.with_entities(Company.sector).distinct(Company.sector)
+        # print(df)
+        # ---------- End of fetch operation
+        sectors = Company.query.with_entities(Company.sector).distinct(Company.sector)
     sectors = [r for r, in sectors]
     return render_template('data_frame.html', tables=[df.to_html(classes='table-sm table table-striped ', index=False)],
+                           titles=df.columns.values, sectors=sectors)
+
+
+# Show the list of dates for which we have record in database
+@bp.route('/records', methods=['GET'])
+def fetch_dates():
+    PriceQuery = db.session.query(
+        PriceHistory.date,
+        func.count(PriceHistory.date).label("companies_traded"),
+        func.sum(PriceHistory.amount).label("total_amount"),
+        func.sum(PriceHistory.no_of_txns).label("total_txns")
+    ).group_by(PriceHistory.date)
+
+    year = request.args.get('year') or "2010"
+    if year is not None and int(year) > 2009:
+        PriceQuery = PriceQuery.filter(extract('year', PriceHistory.date) == year)
+
+    priceData = PriceQuery.order_by(PriceHistory.date.desc()).all()
+
+    df = pd.DataFrame([(d.date, d.companies_traded, d.total_txns, d.total_amount) for d in priceData],
+                      columns=['Date', 'Traded Companies', "No. of Txns", "Total Amount"])
+    df.insert(0, '#', df.index + 1)
+    df['No. of Txns'] = df['No. of Txns'].apply('{:,}'.format)
+    df['Total Amount'] = df['Total Amount'].apply('{:,}'.format)
+
+    # Extract Unique years
+    # sectors = np.unique(pd.DatetimeIndex(df['Date']).year)
+    sectors = db.session.query(distinct(func.date_part('YEAR', PriceHistory.date)).label("year")).all()
+    # sectors = [r for r, in sectors]
+
+    # link = url_for('main.price_history')
+    df['Date'] = df['Date'].apply(anchor_link)
+
+    # print(years)
+    return render_template('prices/record_dates.html', tables=[df.to_html(classes='table-sm table table-striped ', index=False,escape=False)],
                            titles=df.columns.values, sectors=sectors)
 
 
@@ -207,3 +246,7 @@ def fetchPageData(thisDate):
     tr_elements = doc.xpath('//tr')
 
     return tr_elements
+
+
+def anchor_link(val):
+    return '<a target="_blank" href="/prices?day={0}">{0}</a>'.format(val)

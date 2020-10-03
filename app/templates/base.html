@@ -30,19 +30,24 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('main.index') }}">Home <span
+                            class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('main.companies')}}">Companies</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">FloorSheet</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Price History
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="nav-link" href="{{url_for('prices.fetch_dates')}}">Fetched Dates</a>
+                        <a class="nav-link" href="{{url_for('main.price_history')}}">Price History</a>
+                    </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('main.price_history')}}">Price History</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">FloorSheet</a>
                 </li>
                 <li class="nav-item float-right">
                     {% if current_user.is_authenticated %}
@@ -68,4 +73,9 @@
 </div>
 
 </body>
+<style>
+    /*.dropdown:hover > .dropdown-menu {*/
+    /*    display: block;*/
+    /*}*/
+</style>
 </html>

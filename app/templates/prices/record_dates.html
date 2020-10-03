@@ -7,18 +7,13 @@
 <form action="{{request.path}}" class="form-inline" method="get">
     <div class="form-group">
         <div class="form-group mb-2">
-            <input type="hidden" name="day" value="{{ request.args.get('day')}}"/>
-            <select class="form-control form-control-sm" name="sector" id="sector">
-                <option value="">All Sectors</option>
+            <select class="form-control form-control-sm" name="year" id="year">
+                <option value="">Select Year</option>
                 {% for sector in sectors %}
                 <option {% if request.args.get(
-                'sector') == sector %} selected {% endif %} value="{{sector}}">{{sector}}</option>
+                'year') == sector %} selected {% endif %} value="{{sector}}">{{sector}}</option>
                 {% endfor %}
             </select>
-        </div>
-        <div class="form-group mb-2 ml-2">
-            <input name="term" class="form-control-sm" placeholder="Name, Scrip, Sector"
-                   value="{{ request.args.get('term') or '' }}">
         </div>
         <div class="form-group mb-2 ml-2">
             <button class="btn btn-success btn-sm">Search</button>
